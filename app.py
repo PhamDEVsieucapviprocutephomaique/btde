@@ -27,7 +27,13 @@ st.markdown("""
 def fetch_binance(sym='BTCUSDT', intv='1h', lim=500):
     url = 'https://api.binance.com/api/v3/klines'
     try:
-        r = requests.get(url, params={'symbol': sym, 'interval': intv, 'limit': lim}, timeout=15)
+        # THÊM HEADER USER-AGENT
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        r = requests.get(url, params={'symbol': sym, 'interval': intv, 'limit': lim}, 
+                        timeout=15, headers=headers)
         r.raise_for_status()
         cols = ['t', 'o', 'h', 'l', 'c', 'v', 'ct', 'qav', 'nt', 'tbbav', 'tbqav', 'ig']
         df = pd.DataFrame(r.json(), columns=cols)
